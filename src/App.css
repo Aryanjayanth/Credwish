@@ -1,0 +1,202 @@
+
+#root {
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+/* Hide scrollbars for the partner banner */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Carousel custom styles */
+.embla {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+/* Animation for partner logos */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+  min-width: max-content;
+}
+
+/* Custom header height for scroll offsets */
+main {
+  scroll-padding-top: 80px;
+  background-color: #dbeafe; /* light blue bg-blue-100 equivalent */
+}
+
+/* Make navbar height consistent */
+nav.fixed {
+  min-height: 80px;
+}
+
+/* Fix for accordion styles */
+.accordion-content {
+  overflow: hidden;
+}
+
+/* Fix font styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  color: #000080; /* Navy blue color */
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #dbeafe; /* light blue bg-blue-100 equivalent */
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Layout background */
+.section {
+  background-color: #dbeafe; /* light blue bg-blue-100 equivalent */
+  padding: 4rem 0;
+}
+
+/* Card styles */
+.card {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1);
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 10px 15px rgba(0,0,0,0.05), 0 4px 6px rgba(0,0,0,0.05);
+  transform: translateY(-2px);
+}
+
+/* Eligibility checker card */
+.eligibility-card {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: none;
+}
+
+.eligibility-card-header {
+  background: linear-gradient(to right, #000080, #3b82f6);
+  color: white;
+  padding: 1.25rem;
+}
+
+/* Loan card styles */
+.loan-card {
+  background-color: #000080;
+  border-radius: 0.75rem;
+  color: white;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  height: 100%;
+}
+
+.loan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+
+/* Input styles */
+input, select {
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  background-color: white;
+  transition: all 0.2s;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Button styling */
+.btn-primary {
+  background-color: #0064e5;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-primary:hover {
+  background-color: #0052bd;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+}
+
+/* Typography improvements */
+.heading-xl {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.heading-lg {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.heading-md {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .heading-xl {
+    font-size: 3.5rem;
+  }
+  
+  .heading-lg {
+    font-size: 2.5rem;
+  }
+  
+  .heading-md {
+    font-size: 2rem;
+  }
+}
