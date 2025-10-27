@@ -48,16 +48,16 @@ const Footer = () => {
                 <Link to="/" className="text-gray-300 hover:text-white transition-colors text-sm">Home</Link>
               </li>
               <li>
-                <Link to="/loans" className="text-gray-300 hover:text-white transition-colors text-sm">Loans</Link>
+                <Link to="/loans" className="text-gray-300 hover:text-white transition-colors text-sm" onClick={() => window.scrollTo(0, 0)}>Loans</Link>
               </li>
               <li>
-                <Link to="/special-products" className="text-gray-300 hover:text-white transition-colors text-sm">Special Products</Link>
+                <Link to="/special-products" className="text-gray-300 hover:text-white transition-colors text-sm" onClick={() => window.scrollTo(0, 0)}>Special Products</Link>
               </li>
               <li>
-                <Link to="/eligibility" className="text-gray-300 hover:text-white transition-colors text-sm">Eligibility</Link>
+                <Link to="/eligibility" className="text-gray-300 hover:text-white transition-colors text-sm" onClick={() => window.scrollTo(0, 0)}>Eligibility</Link>
               </li>
               <li>
-                <Link to="/contact" className="text-gray-300 hover:text-white transition-colors text-sm">Contact</Link>
+                <Link to="/contact" className="text-gray-300 hover:text-white transition-colors text-sm" onClick={() => window.scrollTo(0, 0)}>Contact</Link>
               </li>
             </ul>
           </div>
@@ -67,22 +67,46 @@ const Footer = () => {
             <h3 className="text-xl font-semibold mb-4 text-white font-playfair">Loan Types</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/loans#personal" className="text-gray-300 hover:text-white transition-colors text-sm">Personal Loans</Link>
+                <a href="/loans#personal" className="text-gray-300 hover:text-white transition-colors text-sm" onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = '/loans#personal';
+                  window.scrollTo(0, 0);
+                }}>Personal Loans</a>
               </li>
               <li>
-                <Link to="/loans#business" className="text-gray-300 hover:text-white transition-colors text-sm">Business Loans</Link>
+                <a href="/loans#business" className="text-gray-300 hover:text-white transition-colors text-sm" onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = '/loans#business';
+                  window.scrollTo(0, 0);
+                }}>Business Loans</a>
               </li>
               <li>
-                <Link to="/loans#home" className="text-gray-300 hover:text-white transition-colors text-sm">Home Loans</Link>
+                <a href="/loans#home" className="text-gray-300 hover:text-white transition-colors text-sm" onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = '/loans#home';
+                  window.scrollTo(0, 0);
+                }}>Home Loans</a>
               </li>
               <li>
-                <Link to="/loans#education" className="text-gray-300 hover:text-white transition-colors text-sm">Education Loans</Link>
+                <a href="/loans#education" className="text-gray-300 hover:text-white transition-colors text-sm" onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = '/loans#education';
+                  window.scrollTo(0, 0);
+                }}>Education Loans</a>
               </li>
               <li>
-                <Link to="/loans#gold" className="text-gray-300 hover:text-white transition-colors text-sm">Gold Loans</Link>
+                <a href="/loans#gold" className="text-gray-300 hover:text-white transition-colors text-sm" onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = '/loans#gold';
+                  window.scrollTo(0, 0);
+                }}>Gold Loans</a>
               </li>
               <li>
-                <Link to="/loans#car" className="text-gray-300 hover:text-white transition-colors text-sm">Car Loans</Link>
+                <a href="/loans#car" className="text-gray-300 hover:text-white transition-colors text-sm" onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = '/loans#car';
+                  window.scrollTo(0, 0);
+                }}>Car Loans</a>
               </li>
             </ul>
           </div>
@@ -114,13 +138,13 @@ const Footer = () => {
               © {new Date().getFullYear()} CREDWISH MARKETING AND CONSULTING PRIVATE LIMITED. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link to="/privacy-policy" className="text-gray-400 text-sm hover:text-white transition-colors">
+              <Link to="/privacy-policy" className="text-gray-400 text-sm hover:text-white transition-colors" onClick={() => window.scrollTo(0, 0)}>
                 Privacy Policy
               </Link>
-              <Link to="/terms-of-service" className="text-gray-400 text-sm hover:text-white transition-colors">
+              <Link to="/terms-of-service" className="text-gray-400 text-sm hover:text-white transition-colors" onClick={() => window.scrollTo(0, 0)}>
                 Terms of Service
               </Link>
-              <Link to="/cookies-policy" className="text-gray-400 text-sm hover:text-white transition-colors">
+              <Link to="/cookies-policy" className="text-gray-400 text-sm hover:text-white transition-colors" onClick={() => window.scrollTo(0, 0)}>
                 Cookies Policy
               </Link>
             </div>

@@ -165,7 +165,10 @@ const FAQSection = ({
               <div className="flex justify-center">
                 <Link 
                   to="/contact" 
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.scrollTo(0, 0);
+                  }}
                   className="px-8 py-3.5 bg-credwish-600 text-white font-medium rounded-xl hover:bg-credwish-700 transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg focus:ring-2 focus:ring-credwish-500 focus:ring-offset-2 text-center"
                 >
                   Contact Support

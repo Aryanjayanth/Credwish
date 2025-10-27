@@ -671,18 +671,20 @@ const Home = () => {
               Take the first step towards your dreams. Our team is here to guide you through every step of the loan process with transparency and care.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <a 
-                href="/application"
+              <Link 
+                to="/application" 
+                onClick={() => window.scrollTo(0, 0)}
                 className="bg-white text-credwish-700 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg transition-colors duration-300 inline-block text-center"
               >
                 Apply Now
-              </a>
-              <a 
-                href="/eligibility"
+              </Link>
+              <Link 
+                to="/eligibility"
+                onClick={() => window.scrollTo(0, 0)}
                 className="border-2 border-white text-white hover:bg-white hover:bg-opacity-10 font-semibold py-3 px-8 rounded-lg transition-colors duration-300 inline-block text-center"
               >
                 Check Eligibility
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -13,6 +13,9 @@ import Eligibility from "./pages/Eligibility";
 import Application from "./pages/Application";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import TermsOfService from "./pages/legal/TermsOfService";
+import CookiesPolicy from "./pages/legal/CookiesPolicy";
 import "./App.css";
 
 const queryClient = new QueryClient();
@@ -42,6 +45,12 @@ const App = () => (
             <Route path="/eligibility" element={<Eligibility />} />
             <Route path="/application" element={<Application />} />
             <Route path="/contact" element={<Contact />} />
+            
+            {/* Legal Pages */}
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/cookies-policy" element={<CookiesPolicy />} />
+            
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
