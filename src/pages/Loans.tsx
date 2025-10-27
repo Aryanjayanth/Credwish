@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { 
   User, 
   Building, 
@@ -16,7 +16,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import SectionHeading from '@/components/shared/SectionHeading';
 import LoanCard from "@/components/shared/LoanCard";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 const Loans = () => {
   const location = useLocation();
@@ -469,9 +468,12 @@ const Loans = () => {
           </div>
 
           <div className="mt-8 sm:mt-10 md:mt-12 text-center">
-            <a href="/application" className="btn-primary inline-block px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg">
+            <Link 
+              to={`/application?product=${activeTab || 'personal'}`} 
+              className="btn-primary inline-block px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg"
+            >
               Start Your Application
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -498,18 +500,18 @@ const Loans = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
-                href="/contact" 
+              <Link 
+                to="/contact" 
                 className="group relative overflow-hidden px-8 py-4 text-base font-semibold bg-white text-credwish-700 hover:bg-gray-50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg rounded-lg"
               >
                 Contact an Advisor
-              </a>
-              <a 
-                href="/eligibility" 
+              </Link>
+              <Link 
+                to="/eligibility" 
                 className="px-8 py-4 text-base font-semibold text-white border-2 border-white hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg rounded-lg"
               >
                 Check Your Eligibility
-              </a>
+              </Link>
             </div>
           </div>
         </div>
