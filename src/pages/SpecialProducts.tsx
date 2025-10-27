@@ -399,12 +399,6 @@ const SpecialProducts = () => {
         className="bg-gray-50"
       />
       
-      {/* CTA Section */}
-      <div className="text-center py-8 bg-gray-50 border-t border-gray-200">
-        <Button asChild variant="outline" className="border-credwish-600 text-credwish-600 hover:bg-credwish-50 w-full sm:w-auto">
-          <Link to="/contact">Have More Questions? Contact Us</Link>
-        </Button>
-      </div>
 
       {/* CTA Section - Styled to match PageCTA */}
       <section className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-br from-credwish-700 via-credwish-600 to-credwish-700">

@@ -58,21 +58,6 @@ const ContactFAQ = () => {
             </AccordionItem>
           ))}
         </Accordion>
-        
-        <div className="mt-10 text-center">
-          <p className="text-gray-600 mb-4">
-            Still have questions? Our team is here to help.
-          </p>
-          <Button 
-            variant="outline" 
-            className="border-credwish-600 text-credwish-600 hover:bg-credwish-50"
-            asChild
-          >
-            <Link to="/contact" className="inline-flex items-center">
-              Contact Support <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-        </div>
       </div>
     </div>
   );

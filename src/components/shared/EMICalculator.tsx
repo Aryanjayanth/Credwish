@@ -70,7 +70,6 @@ const EMICalculator = ({ compact = false }: EMICalculatorProps) => {
                 max={10000000}
                 step={10000}
                 onValueChange={(value) => setLoanAmount(value[0])}
-                className="[&>div:first-child]:h-2 [&>div:first-child]:bg-gray-200 [&>div:first-child]:rounded-full [&>div:first-child>div]:bg-gradient-to-r [&>div:first-child>div]:from-credwish-500 [&>div:first-child>div]:to-credwish-600 [&>div:first-child>div]:rounded-full"
               />
               <div className="absolute top-1/2 -right-1 transform -translate-y-1/2 w-3 h-3 bg-white border-2 border-credwish-500 rounded-full shadow-sm"></div>
             </div>
@@ -92,7 +91,6 @@ const EMICalculator = ({ compact = false }: EMICalculatorProps) => {
                 max={20}
                 step={0.1}
                 onValueChange={(value) => setInterestRate(value[0])}
-                className="[&>div:first-child]:h-2 [&>div:first-child]:bg-gray-200 [&>div:first-child]:rounded-full [&>div:first-child>div]:bg-gradient-to-r [&>div:first-child>div]:from-credwish-500 [&>div:first-child>div]:to-credwish-600 [&>div:first-child>div]:rounded-full"
               />
               <div className="absolute top-1/2 -right-1 transform -translate-y-1/2 w-3 h-3 bg-white border-2 border-credwish-500 rounded-full shadow-sm"></div>
             </div>
@@ -114,7 +112,6 @@ const EMICalculator = ({ compact = false }: EMICalculatorProps) => {
                 max={30}
                 step={1}
                 onValueChange={(value) => setLoanTenure(value[0])}
-                className="[&>div:first-child]:h-2 [&>div:first-child]:bg-gray-200 [&>div:first-child]:rounded-full [&>div:first-child>div]:bg-gradient-to-r [&>div:first-child>div]:from-credwish-500 [&>div:first-child>div]:to-credwish-600 [&>div:first-child>div]:rounded-full"
               />
               <div className="absolute top-1/2 -right-1 transform -translate-y-1/2 w-3 h-3 bg-white border-2 border-credwish-500 rounded-full shadow-sm"></div>
             </div>

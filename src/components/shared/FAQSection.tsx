@@ -162,7 +162,7 @@ const FAQSection = ({
               <p className="text-gray-600 mb-8 max-w-lg mx-auto">
                 Our support team is here to help you with any questions about our services, features, or anything else.
               </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <div className="flex justify-center">
                 <Link 
                   to="/contact" 
                   onClick={(e) => e.stopPropagation()}
@@ -170,9 +170,6 @@ const FAQSection = ({
                 >
                   Contact Support
                 </Link>
-                <button className="px-8 py-3.5 border-2 border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-white transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
-                  View All FAQs
-                </button>
               </div>
             </div>
           </div>

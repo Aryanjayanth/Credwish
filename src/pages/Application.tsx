@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { 
   User, 
   Building, 
@@ -22,8 +23,57 @@ import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import Layout from '@/components/layout/Layout';
 import SectionHeading from '@/components/shared/SectionHeading';
+
+interface FormData {
+  // Personal details
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  panCard: string;
+  aadharNumber: string;
+  address: string;
+  city: string;
+  state: string;
+  pincode: string;
+  
+  // Loan details
+  loanType: string;
+  loanAmount: string;
+  loanPurpose: string;
+  loanTenure: string;
+  existingLoan: string;
+  
+  // Employment details
+  employmentType: string;
+  companyName: string;
+  designation: string;
+  workExperience: string;
+  monthlyIncome: string;
+  additionalIncome: string;
+  
+  // Business/Self-employed details
+  businessNature: string;
+  businessName: string;
+  businessType: string;
+  businessVintage: string;
+  gstin: string;
+  
+  // Document information
+  documentType: string;
+  documentNumber: string;
+  
+  // Additional information
+  reference: string;
+  message: string;
+  contactPreference: string;
+  bestTimeToCall: string;
+  
+  // Terms and conditions
+  agreeTerms: boolean;
+}
 
 const Application = () => {
   const location = useLocation();
@@ -36,7 +86,7 @@ const Application = () => {
   const queryParams = new URLSearchParams(location.search);
   const preSelectedProduct = queryParams.get('product');
 
-  // Form state with added business-related properties
+  // Form state with all necessary fields (file uploads removed)
   const [formData, setFormData] = useState({
     // Personal details
     firstName: '',
@@ -64,6 +114,7 @@ const Application = () => {
     designation: '',
     workExperience: '',
     monthlyIncome: '',
+    additionalIncome: '',
     
     // Business/Self-employed details
     businessNature: '',
@@ -72,20 +123,21 @@ const Application = () => {
     businessVintage: '',
     gstin: '',
     
-    // Contact preference
+    // Document information (references only, no uploads)
+    documentType: '',
+    documentNumber: '',
+    
+    // Additional information
+    reference: '',
+    message: '',
     contactPreference: 'email',
     bestTimeToCall: 'morning',
     
-    // Documents
-    identityProof: null,
-    addressProof: null,
-    incomeProof: null,
-    
-    // Terms
+    // Terms and conditions
     agreeTerms: false
   });
   
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -93,28 +145,18 @@ const Application = () => {
     }));
   };
   
-  const handleSelectChange = (name, value) => {
+  const handleSelectChange = (name: keyof FormData, value: string) => {
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
   
-  const handleCheckboxChange = (name, checked) => {
+  const handleCheckboxChange = (name: keyof FormData, checked: boolean) => {
     setFormData(prev => ({
       ...prev,
       [name]: checked
     }));
-  };
-  
-  const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    if (files && files.length > 0) {
-      setFormData(prev => ({
-        ...prev,
-        [name]: files[0]
-      }));
-    }
   };
   
   const validateCurrentStep = () => {
@@ -165,18 +207,31 @@ const Application = () => {
         return false;
       }
     } else if (currentStep === 3) {
-      if (!formData.employmentType || !formData.monthlyIncome) {
+      // Check employment type is selected
+      if (!formData.employmentType) {
         toast({
-          title: "Required Fields Missing",
-          description: "Please provide employment type and monthly income.",
+          title: "Employment Type Required",
+          description: "Please select your employment type.",
           variant: "destructive",
         });
         return false;
       }
+      
+      // Check monthly income is provided and valid
+      if (!formData.monthlyIncome) {
+        toast({
+          title: "Monthly Income Required",
+          description: "Please provide your monthly income.",
+          variant: "destructive",
+        });
+        return false;
+      }
+      
+      // Additional validation for salaried employees
       if (formData.employmentType === 'salaried' && (!formData.companyName || !formData.designation)) {
         toast({
-          title: "Required Fields Missing",
-          description: "Please provide company name and designation.",
+          title: "Employment Details Required",
+          description: "Please provide company name and designation for salaried employees.",
           variant: "destructive",
         });
         return false;
@@ -201,7 +256,7 @@ const Application = () => {
     }
   };
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     
     if (!formData.agreeTerms) {
@@ -213,19 +268,61 @@ const Application = () => {
       return;
     }
     
-    // Here you would typically submit the form data to your backend
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      // Create URLSearchParams for form data (simpler than FormData for non-file uploads)
+      const formDataToSend = new URLSearchParams();
+
+      // Add all form data
+      (Object.entries(formData) as [string, string | number | boolean][]).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          formDataToSend.append(key, String(value));
+        }
+      });
+
+      // Add Formspree specific fields
+      formDataToSend.append('_subject', `New Loan Application - ${formData.firstName} ${formData.lastName}`);
+      formDataToSend.append('_replyto', formData.email);
+      formDataToSend.append('_format', 'plain');
+      formDataToSend.append('_template', 'box');
+      formDataToSend.append('submissionDate', new Date().toISOString());
+      formDataToSend.append('pageUrl', window.location.href);
+
+      // Send data to Formspree
+      const response = await fetch('https://formspree.io/f/xqagkrgw', {
+        method: 'POST',
+        body: formDataToSend,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json'
+        }
+      });
+
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit application');
+      }
+      
       setApplicationSubmitted(true);
       toast({
-        title: "Application Submitted",
+        title: "Application Submitted!",
         description: "Your loan application has been successfully submitted. Our team will review it shortly.",
+        variant: "default",
       });
       window.scrollTo(0, 0);
-    }, 1500);
+      
+    } catch (error) {
+      console.error('Application submission error:', error);
+      toast({
+        title: "Submission Failed",
+        description: error.message || "We couldn't submit your application. Please try again or contact support.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   // Loan type icons
@@ -244,60 +341,55 @@ const Application = () => {
   // Application success view
   if (applicationSubmitted) {
     return (
-      <Layout>
-        <div className="section">
-          <div className="container mx-auto max-w-3xl">
-            <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <CheckCircle className="h-10 w-10 text-green-600" />
-              </div>
-              
-              <h1 className="heading-lg mb-4 text-green-700">Application Submitted Successfully!</h1>
-              
-              <p className="text-lg mb-6">
-                Thank you for choosing Credwish. Your application reference number is <span className="font-bold">CW-{Math.floor(100000 + Math.random() * 900000)}</span>
-              </p>
-              
-              <div className="bg-gray-50 rounded-lg p-6 mb-8">
-                <h3 className="text-xl font-semibold mb-4">What Happens Next?</h3>
-                
-                <ol className="text-left space-y-4">
-                  <li className="flex">
-                    <span className="h-6 w-6 rounded-full bg-credwish-100 text-credwish-600 flex items-center justify-center mr-3 flex-shrink-0">1</span>
-                    <p>Our team will review your application within 24-48 hours</p>
-                  </li>
-                  <li className="flex">
-                    <span className="h-6 w-6 rounded-full bg-credwish-100 text-credwish-600 flex items-center justify-center mr-3 flex-shrink-0">2</span>
-                    <p>You'll receive an email and SMS with application status</p>
-                  </li>
-                  <li className="flex">
-                    <span className="h-6 w-6 rounded-full bg-credwish-100 text-credwish-600 flex items-center justify-center mr-3 flex-shrink-0">3</span>
-                    <p>A loan officer will contact you for further verification</p>
-                  </li>
-                  <li className="flex">
-                    <span className="h-6 w-6 rounded-full bg-credwish-100 text-credwish-600 flex items-center justify-center mr-3 flex-shrink-0">4</span>
-                    <p>Upon approval, loan agreement will be shared for e-signing</p>
-                  </li>
-                </ol>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild className="bg-credwish-600 hover:bg-credwish-700">
-                  <a href="/">Return to Home</a>
-                </Button>
-                <Button asChild variant="outline" className="border-credwish-600 text-credwish-600 hover:bg-credwish-50">
-                  <a href="/contact">Contact Support</a>
-                </Button>
-              </div>
-            </div>
+      <div className="container mx-auto px-4 py-12">
+        <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle className="h-10 w-10 text-green-600" />
+          </div>
+          <h1 className="heading-lg mb-4 text-green-700">Application Submitted Successfully!</h1>
+          
+          <p className="text-lg mb-6">
+            Thank you for choosing Credwish. Your application reference number is <span className="font-bold">CW-{Math.floor(100000 + Math.random() * 900000)}</span>
+          </p>
+          
+          <div className="bg-gray-50 rounded-lg p-6 mb-8">
+            <h3 className="text-xl font-semibold mb-4">What Happens Next?</h3>
+            
+            <ol className="text-left space-y-4">
+              <li className="flex">
+                <span className="h-6 w-6 rounded-full bg-credwish-100 text-credwish-600 flex items-center justify-center mr-3 flex-shrink-0">1</span>
+                <p>Our team will review your application within 24-48 hours</p>
+              </li>
+              <li className="flex">
+                <span className="h-6 w-6 rounded-full bg-credwish-100 text-credwish-600 flex items-center justify-center mr-3 flex-shrink-0">2</span>
+                <p>You'll receive an email and SMS with application status</p>
+              </li>
+              <li className="flex">
+                <span className="h-6 w-6 rounded-full bg-credwish-100 text-credwish-600 flex items-center justify-center mr-3 flex-shrink-0">3</span>
+                <p>A loan officer will contact you for further verification</p>
+              </li>
+              <li className="flex">
+                <span className="h-6 w-6 rounded-full bg-credwish-100 text-credwish-600 flex items-center justify-center mr-3 flex-shrink-0">4</span>
+                <p>Upon approval, loan agreement will be shared for e-signing</p>
+              </li>
+            </ol>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild className="bg-credwish-600 hover:bg-credwish-700">
+              <a href="/">Return to Home</a>
+            </Button>
+            <Button asChild variant="outline" className="border-credwish-600 text-credwish-600 hover:bg-credwish-50">
+              <a href="/contact">Contact Support</a>
+            </Button>
           </div>
         </div>
-      </Layout>
+      </div>
     );
   }
 
   return (
-    <Layout>
+    <>
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-credwish-800 to-credwish-700 py-16 pt-24 md:pt-32">
         <div className="container mx-auto">
@@ -598,28 +690,23 @@ const Application = () => {
                   
                   <div className="space-y-6">
                     <div className="space-y-2">
-                      <Label>Employment Type <span className="text-red-500">*</span></Label>
+                      <Label className="block font-medium">Employment Type <span className="text-red-500">*</span></Label>
                       <RadioGroup 
-                        value={formData.employmentType} 
+                        value={formData.employmentType}
                         onValueChange={(value) => handleSelectChange('employmentType', value)}
-                        className="flex flex-wrap gap-6"
+                        className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2"
                       >
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="salaried" id="employmentType-salaried" />
-                          <Label htmlFor="employmentType-salaried">Salaried</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="self-employed" id="employmentType-self-employed" />
-                          <Label htmlFor="employmentType-self-employed">Self-Employed</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="business-owner" id="employmentType-business-owner" />
-                          <Label htmlFor="employmentType-business-owner">Business Owner</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="other" id="employmentType-other" />
-                          <Label htmlFor="employmentType-other">Other</Label>
-                        </div>
+                        {[
+                          { id: 'salaried', label: 'Salaried' },
+                          { id: 'selfEmployed', label: 'Self-Employed' },
+                          { id: 'businessOwner', label: 'Business Owner' },
+                          { id: 'other', label: 'Other' }
+                        ].map((type) => (
+                          <div key={type.id} className="flex items-center space-x-2">
+                            <RadioGroupItem value={type.id} id={type.id} />
+                            <Label htmlFor={type.id}>{type.label}</Label>
+                          </div>
+                        ))}
                       </RadioGroup>
                     </div>
                     
@@ -756,21 +843,33 @@ const Application = () => {
                             <SelectItem value="0-2">0-2 years</SelectItem>
                             <SelectItem value="3-5">3-5 years</SelectItem>
                             <SelectItem value="6-10">6-10 years</SelectItem>
-                            <SelectItem value="10+">More than 10 years</SelectItem>
+                            <SelectItem value="10+">10+ years</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                       
                       <div className="space-y-2">
                         <Label htmlFor="monthlyIncome">Monthly Income (₹) <span className="text-red-500">*</span></Label>
-                        <Input 
-                          id="monthlyIncome" 
-                          name="monthlyIncome" 
-                          type="number" 
-                          value={formData.monthlyIncome} 
-                          onChange={handleChange} 
+                        <Input
+                          id="monthlyIncome"
+                          name="monthlyIncome"
+                          type="number"
+                          value={formData.monthlyIncome}
+                          onChange={handleChange}
                           placeholder="Enter your monthly income"
                           required
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="additionalIncome">Additional Monthly Income (₹)</Label>
+                        <Input
+                          id="additionalIncome"
+                          name="additionalIncome"
+                          type="number"
+                          value={formData.additionalIncome}
+                          onChange={handleChange}
+                          placeholder="Any additional income"
                         />
                       </div>
                     </div>
@@ -779,98 +878,51 @@ const Application = () => {
               )}
 
               {/* Step 4: Document Upload & Terms */}
-              {currentStep === 4 && (
+              {Number(currentStep) === 4 && (
                 <>
-                  <h2 className="text-2xl font-semibold mb-6">Document Upload</h2>
+                  <h2 className="text-2xl font-semibold mb-6">Document Information</h2>
                   
                   <div className="space-y-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="identityProof">Identity Proof (PAN/Aadhar/Passport)</Label>
-                      <div className="border border-dashed border-gray-300 rounded-lg p-6 text-center">
-                        <Upload className="h-10 w-10 text-gray-400 mx-auto mb-2" />
-                        <p className="text-gray-600 mb-2">Click or drag & drop file to upload</p>
-                        <p className="text-xs text-gray-500">Supported formats: JPG, PNG, PDF (Max: 5MB)</p>
-                        <Input 
-                          id="identityProof" 
-                          name="identityProof" 
-                          type="file" 
-                          className="hidden" 
-                          onChange={handleFileChange}
-                          accept=".jpg,.jpeg,.png,.pdf"
-                        />
-                        <Button 
-                          type="button" 
-                          variant="outline" 
-                          className="mt-4"
-                          onClick={() => document.getElementById('identityProof').click()}
-                        >
-                          Browse Files
-                        </Button>
-                        {formData.identityProof && (
-                          <p className="text-green-600 text-sm mt-2">
-                            File selected: {formData.identityProof.name}
-                          </p>
-                        )}
+                    <div>
+                      <h3 className="text-lg font-medium mb-4">Document Information</h3>
+                      <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                        <p className="text-sm text-blue-800">
+                          Our representative will contact you to collect the necessary documents after reviewing your application.
+                        </p>
                       </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="addressProof">Address Proof (Utility Bill/Bank Statement)</Label>
-                      <div className="border border-dashed border-gray-300 rounded-lg p-6 text-center">
-                        <Upload className="h-10 w-10 text-gray-400 mx-auto mb-2" />
-                        <p className="text-gray-600 mb-2">Click or drag & drop file to upload</p>
-                        <p className="text-xs text-gray-500">Supported formats: JPG, PNG, PDF (Max: 5MB)</p>
-                        <Input 
-                          id="addressProof" 
-                          name="addressProof" 
-                          type="file" 
-                          className="hidden" 
-                          onChange={handleFileChange}
-                          accept=".jpg,.jpeg,.png,.pdf"
-                        />
-                        <Button 
-                          type="button" 
-                          variant="outline" 
-                          className="mt-4"
-                          onClick={() => document.getElementById('addressProof').click()}
-                        >
-                          Browse Files
-                        </Button>
-                        {formData.addressProof && (
-                          <p className="text-green-600 text-sm mt-2">
-                            File selected: {formData.addressProof.name}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="incomeProof">Income Proof (Salary Slip/IT Returns)</Label>
-                      <div className="border border-dashed border-gray-300 rounded-lg p-6 text-center">
-                        <Upload className="h-10 w-10 text-gray-400 mx-auto mb-2" />
-                        <p className="text-gray-600 mb-2">Click or drag & drop file to upload</p>
-                        <p className="text-xs text-gray-500">Supported formats: JPG, PNG, PDF (Max: 5MB)</p>
-                        <Input 
-                          id="incomeProof" 
-                          name="incomeProof" 
-                          type="file" 
-                          className="hidden" 
-                          onChange={handleFileChange}
-                          accept=".jpg,.jpeg,.png,.pdf"
-                        />
-                        <Button 
-                          type="button" 
-                          variant="outline" 
-                          className="mt-4"
-                          onClick={() => document.getElementById('incomeProof').click()}
-                        >
-                          Browse Files
-                        </Button>
-                        {formData.incomeProof && (
-                          <p className="text-green-600 text-sm mt-2">
-                            File selected: {formData.incomeProof.name}
-                          </p>
-                        )}
+                      
+                      <div className="space-y-4">
+                        {/* Document Type */}
+                        <div className="space-y-2">
+                          <Label htmlFor="documentType">Document Type</Label>
+                          <Select 
+                            value={formData.documentType}
+                            onValueChange={(value) => handleSelectChange('documentType', value)}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select document type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="aadhaar">Aadhaar Card</SelectItem>
+                              <SelectItem value="pan">PAN Card</SelectItem>
+                              <SelectItem value="passport">Passport</SelectItem>
+                              <SelectItem value="voter">Voter ID</SelectItem>
+                              <SelectItem value="driving">Driving License</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        
+                        {/* Document Number */}
+                        <div className="space-y-2">
+                          <Label htmlFor="documentNumber">Document Number</Label>
+                          <Input 
+                            id="documentNumber"
+                            name="documentNumber"
+                            value={formData.documentNumber}
+                            onChange={handleChange}
+                            placeholder="Enter document number"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -932,7 +984,7 @@ const Application = () => {
                       <Checkbox 
                         id="agreeTerms" 
                         checked={formData.agreeTerms} 
-                        onCheckedChange={(checked) => handleCheckboxChange('agreeTerms', checked)}
+                        onCheckedChange={(checked: boolean) => handleCheckboxChange('agreeTerms', checked)}
                       />
                       <div className="flex-grow">
                         <Label 
@@ -991,57 +1043,83 @@ const Application = () => {
       </section>
 
       {/* Communication Channels */}
-      <section className="section bg-gray-50">
+      <motion.section 
+        className="section bg-gray-50 overflow-hidden"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
         <div className="container mx-auto max-w-4xl">
-          <SectionHeading 
-            title="Need Assistance?" 
-            subtitle="Our loan experts are ready to help you with your application"
-            center
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <SectionHeading 
+              title="Need Assistance?" 
+              subtitle="Our loan experts are ready to help you with your application"
+              center
+            />
+          </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center text-center">
-              <div className="w-12 h-12 bg-credwish-100 rounded-full flex items-center justify-center text-credwish-600 mb-4">
-                <User className="h-6 w-6" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2">Visit Branch</h3>
-              <p className="text-gray-600">
-                Schedule an appointment at our nearest branch for in-person assistance
-              </p>
-              <Button asChild variant="link" className="text-credwish-600 mt-4">
-                <a href="/contact#locations">Find Branches</a>
-              </Button>
-            </div>
-            
-            <div className="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center text-center">
-              <div className="w-12 h-12 bg-credwish-100 rounded-full flex items-center justify-center text-credwish-600 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.div 
+              className="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow duration-300"
+              whileHover={{ y: -5, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)' }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <motion.div 
+                className="w-12 h-12 bg-credish-100 rounded-full flex items-center justify-center text-credish-600 mb-4"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
                 <Mail className="h-6 w-6" />
-              </div>
+              </motion.div>
               <h3 className="text-lg font-semibold mb-2">Email Support</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-4">
                 Send us your queries and get a response within 24 hours
               </p>
-              <Button asChild variant="link" className="text-credwish-600 mt-4">
-                <a href="mailto:support@credwish.com">support@credwish.com</a>
-              </Button>
-            </div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button asChild variant="link" className="text-credwish-600 mt-2">
+                  <a href="mailto:chaitanya@credwish.in">chaitanya@credwish.in</a>
+                </Button>
+              </motion.div>
+            </motion.div>
             
-            <div className="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center text-center">
-              <div className="w-12 h-12 bg-credwish-100 rounded-full flex items-center justify-center text-credwish-600 mb-4">
+            <motion.div 
+              className="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center text-center hover:shadow-md transition-shadow duration-300"
+              whileHover={{ y: -5, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)' }}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <motion.div 
+                className="w-12 h-12 bg-credish-100 rounded-full flex items-center justify-center text-credish-600 mb-4"
+                whileHover={{ scale: 1.1, rotate: -5 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
                 <Phone className="h-6 w-6" />
-              </div>
+              </motion.div>
               <h3 className="text-lg font-semibold mb-2">Call Helpline</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-4">
                 Talk to our experts directly for immediate assistance
               </p>
-              <Button asChild variant="link" className="text-credwish-600 mt-4">
-                <a href="tel:+18001234567">1-800-123-4567</a>
-              </Button>
-            </div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button asChild variant="link" className="text-credwish-600 mt-2">
+                  <a href="tel:+917569250960">+91 75692 50960</a>
+                </Button>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
-      </section>
-    </Layout>
+      </motion.section>
+    </>
   );
 };
 

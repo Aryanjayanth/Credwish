@@ -1,5 +1,6 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, useInView, useAnimation, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -413,13 +414,6 @@ const Eligibility = () => {
                 ))}
               </div>
             </div>
-            
-            <div className="mt-8 text-center">
-              <Button className="bg-credwish-600 hover:bg-credwish-700">
-                Get Your Free CIBIL Report
-              </Button>
-              <p className="text-xs text-gray-500 mt-3">Checking your own score won't affect your credit rating</p>
-            </div>
           </div>
 
           {/* Good Looking Credit Score Impact */}
@@ -548,67 +542,290 @@ const Eligibility = () => {
       </section>
 
 
-      {/* Enhanced Loan Approval Process */}
+      {/* Enhanced Loan Approval Process with Animations */}
       <section className="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-blue-50 via-white to-blue-50 relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-10">
-          <div className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-credwish-400/30 blur-3xl"></div>
-          <div className="absolute bottom-10 -right-10 w-80 h-80 rounded-full bg-blue-400/20 blur-3xl"></div>
-        </div>
+        {/* Animated background elements */}
+        <motion.div 
+          className="absolute top-0 left-0 w-full h-full opacity-10"
+          initial={{ opacity: 0 }}
+          animate={{ 
+            opacity: 0.1,
+            transition: { duration: 1.5, ease: "easeInOut" }
+          }}
+        >
+          <motion.div 
+            className="absolute -top-20 -left-20 w-64 h-64 rounded-full bg-credwish-400/30 blur-3xl"
+            animate={{
+              y: [0, -10, 0],
+              x: [0, 5, 0],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div 
+            className="absolute bottom-10 -right-10 w-80 h-80 rounded-full bg-blue-400/20 blur-3xl"
+            animate={{
+              y: [0, 10, 0],
+              x: [0, -5, 0],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1
+            }}
+          />
+        </motion.div>
         <div className="container px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 font-playfair">
+          <motion.div 
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <motion.h2 
+              className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 font-playfair"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
               Our <span className="text-credwish-600">Loan Approval</span> Process
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            </motion.h2>
+            <motion.p 
+              className="text-lg text-gray-600 max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
               Transparent and straightforward - know exactly what we look for in your application
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
           
           <div className="max-w-6xl mx-auto">
             {/* Process Timeline */}
             <div className="relative mb-16 hidden md:block">
-              <div className="absolute left-1/2 top-0 h-full w-0.5 bg-gradient-to-b from-credwish-100 to-credwish-200 -translate-x-1/2"></div>
+              {/* Animated train track line */}
+              <motion.div 
+                className="absolute left-1/2 top-0 w-2 -translate-x-1/2 h-full flex flex-col items-center"
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: 1,
+                  transition: { 
+                    duration: 0.8,
+                    delay: 0.3
+                  }
+                }}
+              >
+                {/* Main track line with subtle gradient */}
+                <div className="absolute top-0 w-0.5 h-full bg-gradient-to-b from-credwish-600 via-credwish-500 to-credwish-600"></div>
+                
+                {/* Inner glow */}
+                <div className="absolute top-0 w-0.5 h-full bg-credwish-400/30"></div>
+                
+                {/* Animated train with improved design */}
+                <motion.div
+                  className="absolute -left-3 w-8 h-8 bg-gradient-to-br from-credwish-600 to-credwish-800 rounded-md flex items-center justify-center text-white shadow-lg z-20 border border-white/10"
+                  initial={{ y: 0, opacity: 0 }}
+                  animate={{
+                    y: '100%',
+                    opacity: 1,
+                    transition: {
+                      duration: 8,
+                      repeat: Infinity,
+                      ease: 'linear',
+                      delay: 0.8
+                    }
+                  }}
+                >
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="18" 
+                    height="18" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    className="transform -translate-x-px"
+                  >
+                    <rect x="4" y="3" width="16" height="16" rx="2" />
+                    <path d="M4 11h16" />
+                    <path d="M8 15h.01" />
+                    <path d="M16 15h.01" />
+                    <path d="M6 19v2" />
+                    <path d="M18 21v-2" />
+                    <path d="M8 23h8" />
+                  </svg>
+                  
+                  {/* Train headlight effect */}
+                  <div className="absolute -bottom-1 left-1/2 w-1 h-1 bg-yellow-300 rounded-full shadow-[0_0_8px_2px_rgba(252,211,77,0.6)]"></div>
+                </motion.div>
+                
+                {/* Subtle motion blur effect for speed */}
+                <motion.div 
+                  className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-white/30 to-transparent opacity-0"
+                  animate={{
+                    y: ['0%', '100%'],
+                    opacity: [0, 0.4, 0],
+                    transition: {
+                      duration: 0.8,
+                      repeat: Infinity,
+                      repeatDelay: 2,
+                      ease: 'easeOut'
+                    }
+                  }}
+                />
+              </motion.div>
               
               {[
                 {
                   title: "Application Review",
                   desc: "We verify your personal and financial details",
                   icon: <FileText className="h-6 w-6" />,
-                  color: "from-blue-500 to-blue-600"
+                  color: "from-blue-500 to-blue-600",
+                  delay: 0.2
                 },
                 {
                   title: "Document Verification",
                   desc: "Authenticating your submitted documents",
                   icon: <CheckCircle2 className="h-6 w-6" />,
-                  color: "from-green-500 to-green-600"
+                  color: "from-green-500 to-green-600",
+                  delay: 0.4
                 },
                 {
                   title: "Credit Assessment",
                   desc: "Analyzing your credit history and score",
                   icon: <CreditCard className="h-6 w-6" />,
-                  color: "from-purple-500 to-purple-600"
+                  color: "from-purple-500 to-purple-600",
+                  delay: 0.6
                 },
                 {
                   title: "Approval & Disbursal",
                   desc: "Funds transferred upon final approval",
                   icon: <CheckCircle className="h-6 w-6" />,
-                  color: "from-credwish-500 to-credwish-600"
+                  color: "from-credwish-500 to-credwish-600",
+                  delay: 0.8
                 }
               ].map((step, index) => (
-                <div 
+                <motion.div 
                   key={index}
                   className={`relative flex items-center justify-between mb-12 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ 
+                    opacity: 1, 
+                    y: 0,
+                    transition: { 
+                      duration: 0.6, 
+                      delay: step.delay || 0.2,
+                      ease: "easeOut"
+                    }
+                  }}
+                  viewport={{ once: true }}
+                  whileHover={{ 
+                    scale: 1.02,
+                    transition: { duration: 0.3 }
+                  }}
                 >
-                  <div className={`w-5/12 ${index % 2 === 0 ? 'text-right pr-8' : 'text-left pl-8'}`}>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{step.title}</h3>
-                    <p className="text-gray-600">{step.desc}</p>
-                  </div>
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br flex items-center justify-center text-white shadow-lg z-10">
-                    {step.icon}
-                  </div>
+                  <motion.div 
+                    className={`w-5/12 ${index % 2 === 0 ? 'text-right pr-8' : 'text-left pl-8'}`}
+                  >
+                    <motion.h3 
+                      className="text-xl font-semibold text-gray-900 mb-2"
+                      whileHover={{ color: '#2563eb' }}
+                    >
+                      {step.title}
+                    </motion.h3>
+                    <motion.p 
+                      className="text-gray-600"
+                      whileHover={{ color: '#4b5563' }}
+                    >
+                      {step.desc}
+                    </motion.p>
+                  </motion.div>
+                  <motion.div 
+                    className="w-16 h-16 rounded-full bg-gradient-to-br flex items-center justify-center text-white shadow-lg z-10 relative overflow-hidden group"
+                    style={{
+                      background: `linear-gradient(135deg, ${step.color.split(' ')[0].replace('from-', '')}, ${step.color.split(' ')[1].replace('to-', '')})`,
+                      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+                    }}
+                    whileHover={{ 
+                      scale: 1.1,
+                      rotate: 5,
+                      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+                    }}
+                  >
+                    {/* Animated station marker */}
+                    <motion.div 
+                      className="absolute -bottom-6 left-1/2 w-2 h-6 bg-gradient-to-b from-credwish-600 to-credwish-800 -translate-x-1/2 rounded-t-sm"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ 
+                        height: 24,
+                        opacity: 1,
+                        transition: {
+                          delay: 0.2 + (index * 0.3),
+                          duration: 0.6,
+                          ease: 'easeOut'
+                        }
+                      }}
+                    >
+                      {/* Station platform */}
+                      <motion.div 
+                        className="absolute -bottom-1 left-1/2 w-24 h-1.5 bg-gradient-to-r from-credwish-700 via-credwish-600 to-credwish-700 -translate-x-1/2 rounded-sm"
+                        initial={{ scaleX: 0, opacity: 0 }}
+                        animate={{ 
+                          scaleX: 1,
+                          opacity: 1,
+                          transition: {
+                            delay: 0.4 + (index * 0.3),
+                            duration: 0.5,
+                            ease: 'backOut'
+                          }
+                        }}
+                      >
+                        {/* Platform edge */}
+                        <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-credwish-800/50 rounded-full"></div>
+                      </motion.div>
+                    </motion.div>
+                    
+                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.1, 1],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        repeatType: 'reverse',
+                        ease: 'easeInOut'
+                      }}
+                    >
+                      {step.icon}
+                    </motion.div>
+                    
+                    {/* Train track connector */}
+                    {index < 3 && (
+                      <motion.div 
+                        className="absolute -bottom-12 left-1/2 w-0.5 h-12 bg-credwish-600 -translate-x-1/2"
+                        initial={{ height: 0 }}
+                        animate={{ 
+                          height: 48,
+                          transition: {
+                            delay: 0.5 + (index * 0.3),
+                            duration: 0.6
+                          }
+                        }}
+                      />
+                    )}
+                  </motion.div>
                   <div className="w-5/12"></div>
-                </div>
+                </motion.div>
               ))}
             </div>
             
@@ -800,7 +1017,10 @@ const Eligibility = () => {
               </div>
               
               <div className="mt-8 text-center">
-                <Button className="bg-credwish-600 hover:bg-credwish-700 px-8 py-6 text-base">
+                <Button 
+                  className="bg-credwish-600 hover:bg-credwish-700 px-8 py-6 text-base"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
                   Check Your Eligibility Now
                 </Button>
               </div>
@@ -810,7 +1030,7 @@ const Eligibility = () => {
       </section>
 
       {/* Enhanced FAQ Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-white">
+      <section id="faq" className="py-12 md:py-16 lg:py-20 bg-white scroll-mt-20">
         <div className="container px-4">
           <div className="max-w-4xl mx-auto text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
@@ -939,12 +1159,25 @@ const Eligibility = () => {
                   Our support team is here to help you with any questions about loans, eligibility, or the application process.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
-                  <button className="px-8 py-3.5 bg-credwish-600 text-white font-medium rounded-xl hover:bg-credwish-700 transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg focus:ring-2 focus:ring-credwish-500 focus:ring-offset-2">
+                  <Link 
+                    to="/contact" 
+                    className="px-8 py-3.5 bg-credwish-600 text-white font-medium rounded-xl hover:bg-credwish-700 transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg focus:ring-2 focus:ring-credwish-500 focus:ring-offset-2 text-center"
+                  >
                     Contact Support
-                  </button>
-                  <button className="px-8 py-3.5 border-2 border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-white transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
+                  </Link>
+                  <Link 
+                    to="#faq" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const faqSection = document.getElementById('faq');
+                      if (faqSection) {
+                        faqSection.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    className="px-8 py-3.5 border-2 border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-white transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 text-center"
+                  >
                     View All FAQs
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

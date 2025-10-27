@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, Send } from 'lucide-react';
+import { Loader2, Send, CheckCircle } from 'lucide-react';
 
 interface FormData {
   name: string;
@@ -75,13 +75,44 @@ const ContactForm = () => {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Send data to Formspree
+      const response = await fetch('https://formspree.io/f/xpwozvqq', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          loanType: formData.loanType,
+          message: formData.message,
+          _subject: `New Loan Inquiry from ${formData.name}`,
+          _replyto: formData.email,
+          _format: 'plain',
+          _template: 'box',
+          _next: window.location.href
+        })
+      });
+
+      const result = await response.json();
       
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit form');
+      }
+      
+      // Show success message
       toast({
-        title: "Message Sent!",
+        title: "Message Sent Successfully!",
         description: "We've received your message and will get back to you within 24 hours.",
         variant: "default",
+        action: (
+          <div className="flex items-center gap-2">
+            <CheckCircle className="h-5 w-5 text-green-500" />
+            <span>Success</span>
+          </div>
+        ),
       });
 
       // Reset form
@@ -97,8 +128,8 @@ const ContactForm = () => {
     } catch (error) {
       console.error('Form submission error:', error);
       toast({
-        title: "Something went wrong",
-        description: "We couldn't send your message. Please try again later.",
+        title: "Failed to Send Message",
+        description: "We couldn't send your message. Please try again later or contact us directly at support@credwish.com",
         variant: "destructive",
       });
     } finally {

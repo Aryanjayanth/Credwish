@@ -22,14 +22,44 @@ const Loans = () => {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('personal');
   
-  // Parse hash from URL if present
+  // Handle scroll to section when hash changes
   useEffect(() => {
-    if (location.hash) {
-      const hash = location.hash.replace('#', '');
-      if (['personal', 'business', 'home', 'education', 'gold', 'car'].includes(hash)) {
-        setActiveTab(hash);
+    const handleScrollToSection = () => {
+      if (location.hash) {
+        const hash = location.hash.replace('#', '');
+        if (['personal', 'business', 'home', 'education', 'gold', 'car'].includes(hash)) {
+          setActiveTab(hash);
+          
+          // Small timeout to ensure the tab content is rendered
+          setTimeout(() => {
+            // Get the tabs container element
+            const tabsElement = document.querySelector('.tabs-container');
+            if (tabsElement) {
+              // Calculate position to show tabs slightly lower on the page
+              const tabsPosition = tabsElement.getBoundingClientRect().top + window.pageYOffset - 120; // 120px offset from top to show more context
+              
+              // Smooth scroll to show the tabs at the top
+              window.scrollTo({
+                top: tabsPosition,
+                behavior: 'smooth'
+              });
+            }
+          }, 50);
+        }
+      } else {
+        // If no hash, scroll to top of the page
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-    }
+    };
+
+    handleScrollToSection();
+    
+    // Add event listener for hash changes
+    window.addEventListener('hashchange', handleScrollToSection);
+    
+    return () => {
+      window.removeEventListener('hashchange', handleScrollToSection);
+    };
   }, [location]);
 
   const loanTypes = [
@@ -256,7 +286,7 @@ const Loans = () => {
             center
           />
           
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full tabs-container">
             {/* Mobile-friendly tab layout */}
             <TabsList className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-wrap lg:justify-center mb-8 bg-blue-200/50 gap-2 h-auto">
               {loanTypes.map((loan) => (
@@ -272,7 +302,7 @@ const Loans = () => {
             </TabsList>
             
             {loanTypes.map((loan) => (
-              <TabsContent key={loan.id} value={loan.id}>
+              <TabsContent key={loan.id} value={loan.id} id={loan.id}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-start">
                   <div className="space-y-6">
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">{loan.name}</h2>

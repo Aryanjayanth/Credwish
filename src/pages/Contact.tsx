@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Phone, Mail, MessageCircle, MapPin, Clock, CheckCircle } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import SectionHeading from '@/components/shared/SectionHeading';
@@ -84,12 +85,26 @@ const Contact = () => {
               transition={{ delay: 0.3, duration: 0.6 }}
               className="flex flex-wrap justify-center gap-4 mt-8"
             >
-              <a 
-                href="#contact-form" 
-                className="px-8 py-4 bg-white text-credwish-700 hover:bg-gray-100 font-medium rounded-lg transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl"
+              <button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  const formSection = document.getElementById('contact-form-section');
+                  if (formSection) {
+                    formSection.scrollIntoView({ 
+                      behavior: 'smooth',
+                      block: 'start'
+                    });
+                    // Add a slight delay to ensure the scroll has completed before focusing
+                    setTimeout(() => {
+                      const nameInput = formSection.querySelector('input[name="name"]') as HTMLInputElement;
+                      if (nameInput) nameInput.focus();
+                    }, 800);
+                  }
+                }}
+                className="px-8 py-4 bg-white text-credwish-700 hover:bg-gray-100 font-medium rounded-lg transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-credwish-700"
               >
                 Send a Message
-              </a>
+              </button>
               <a 
                 href="tel:+917569250960" 
                 className="px-8 py-4 border border-white/20 text-white hover:bg-white/5 font-medium rounded-lg transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-2 hover:border-white/40"
@@ -106,7 +121,7 @@ const Contact = () => {
       </div>
 
       {/* Contact Form Section */}
-      <div className="py-16 bg-white">
+      <div id="contact-form-section" className="py-16 bg-white scroll-mt-20">
         <div className="container px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-3">Send us a Message</h2>
@@ -232,12 +247,17 @@ const Contact = () => {
                 whileTap={{ scale: 0.98 }}
                 className="w-full sm:w-auto"
               >
-                <Button 
-                  size="lg" 
-                  className="bg-white text-credwish-700 hover:bg-gray-100 px-10 py-7 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
+                <Link 
+                  to="/application" 
+                  className="w-full sm:w-auto"
                 >
-                  Apply for a Loan
-                </Button>
+                  <Button 
+                    size="lg" 
+                    className="w-full bg-white text-credwish-700 hover:bg-gray-100 px-10 py-7 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
+                  >
+                    Apply for a Loan
+                  </Button>
+                </Link>
               </motion.div>
               
               <motion.div
@@ -245,14 +265,16 @@ const Contact = () => {
                 whileTap={{ scale: 0.98 }}
                 className="w-full sm:w-auto"
               >
-                <Button 
-                  variant="outline" 
-                  size="lg" 
-                  className="border-2 border-credwish-300 bg-credwish-700/60 text-credwish-50 hover:bg-credwish-600/80 px-10 py-7 text-base font-semibold backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-credwish-300/20"
-                >
-                  <Phone className="mr-2 h-5 w-5" />
-                  Call Us Now
-                </Button>
+                <a href="tel:+917569250960" className="w-full sm:w-auto">
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full border-2 border-credwish-300 bg-credwish-700/60 text-credwish-50 hover:bg-credwish-600/80 px-10 py-7 text-base font-semibold backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-credwish-300/20"
+                  >
+                    <Phone className="mr-2 h-5 w-5" />
+                    Call Us Now
+                  </Button>
+                </a>
               </motion.div>
             </div>
             

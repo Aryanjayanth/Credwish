@@ -2,7 +2,6 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import { LiveChatButton } from '../live-chat/LiveChatButton';
 import { Toaster } from "@/components/ui/toaster";
 import { Outlet } from "react-router-dom";
 
@@ -18,7 +17,6 @@ const Layout = ({ children }: LayoutProps) => {
         <Outlet />
         {children}
       </main>
-      <LiveChatButton />
       <Footer />
       <Toaster />
     </div>
