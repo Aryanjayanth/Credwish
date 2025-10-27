@@ -168,7 +168,7 @@ const Contact = () => {
               
               <div className="bg-white/90 p-4 rounded-lg border border-credwish-100">
                 <p className="text-sm text-gray-800 leading-normal">
-                  <span className="font-semibold">After-Hours Support:</span> Messages received outside business hours will be addressed on the next working day. For urgent matters, please call our 24/7 helpline at <span className="font-semibold text-credwish-700">1800-123-4567</span>.
+                  <span className="font-semibold">After-Hours Support:</span> Messages received outside business hours will be addressed on the next working day. For urgent matters, please call our 24/7 helpline at <span className="font-semibold text-credwish-700">+91-7569250960</span>.
                 </p>
               </div>
             </div>
