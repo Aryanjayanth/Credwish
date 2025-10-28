@@ -313,13 +313,15 @@ const Home = () => {
                 <p className="text-lg md:text-xl mb-6 md:mb-8 text-gray-700">
                   Get the funds you need with competitive interest rates and flexible repayment options
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button asChild size="lg" className="bg-credwish-600 hover:bg-credwish-700 text-white px-8 py-6 text-base md:text-lg">
-                    <Link to="/loans">Explore Loan Options</Link>
-                  </Button>
-                  <Button asChild size="lg" variant="outline" className="border-credwish-600 text-credwish-600 hover:bg-credwish-50 px-8 py-6 text-base md:text-lg">
-                    <Link to="/eligibility">Check Eligibility</Link>
-                  </Button>
+                <div className="w-full flex flex-col items-center mt-8">
+                  <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
+                    <Button asChild size="lg" className="bg-credwish-600 hover:bg-credwish-700 text-white px-8 py-6 text-base md:text-lg w-full sm:w-auto">
+                      <Link to="/loans" className="text-center">Explore Loan Options</Link>
+                    </Button>
+                    <Button asChild size="lg" variant="outline" className="border-credwish-600 text-credwish-600 hover:bg-credwish-50 px-8 py-6 text-base md:text-lg w-full sm:w-auto">
+                      <Link to="/eligibility" className="text-center">Check Eligibility</Link>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

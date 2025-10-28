@@ -200,10 +200,10 @@ const SpecialProducts = () => {
                     
                     <div className="flex flex-col gap-2 sm:gap-3 mt-6">
                       <Button asChild className="bg-credwish-600 hover:bg-credwish-700 w-full sm:w-auto">
-                        <Link to="/application">Apply Now</Link>
+                        <Link to="/application" state={{ product: product.id }}>Apply Now</Link>
                       </Button>
                       <Button asChild variant="outline" className="border-credwish-600 text-credwish-600 hover:bg-credwish-50 w-full sm:w-auto">
-                        <Link to="/contact">Speak to an Advisor</Link>
+                        <Link to="/contact" state={{ inquiryType: 'advisor', product: product.name }}>Speak to an Advisor</Link>
                       </Button>
                     </div>
                   </div>
@@ -257,7 +257,7 @@ const SpecialProducts = () => {
                         
                         <div className="mt-3">
                           <Button asChild className="w-full bg-credwish-600 hover:bg-credwish-700">
-                            <Link to="/eligibility">Check Eligibility</Link>
+                            <Link to="/eligibility" state={{ product: product.id }}>Check Eligibility</Link>
                           </Button>
                         </div>
                       </div>
@@ -313,17 +313,17 @@ const SpecialProducts = () => {
                     <td className="py-2 sm:py-3 px-2 sm:px-4 md:px-6"></td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4 md:px-6 text-center">
                       <Button asChild size="sm" className="bg-credwish-600 hover:bg-credwish-700 text-xs">
-                        <Link to="/application?product=debt-consolidation">Apply</Link>
+                        <Link to="/application" state={{ product: 'debt-consolidation' }}>Apply</Link>
                       </Button>
                     </td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4 md:px-6 text-center">
                       <Button asChild size="sm" className="bg-credwish-600 hover:bg-credwish-700 text-xs">
-                        <Link to="/application?product=emi-protection">Apply</Link>
+                        <Link to="/application" state={{ product: 'emi-protection' }}>Apply</Link>
                       </Button>
                     </td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4 md:px-6 text-center">
                       <Button asChild size="sm" className="bg-credwish-600 hover:bg-credwish-700 text-xs">
-                        <Link to="/application?product=instant-credit">Apply</Link>
+                        <Link to="/application" state={{ product: 'instant-credit' }}>Apply</Link>
                       </Button>
                     </td>
                   </tr>

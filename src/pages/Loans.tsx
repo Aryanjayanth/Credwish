@@ -330,9 +330,9 @@ const Loans = () => {
                       </ul>
                     </div>
                     
-                    <a href="/application" className="btn-primary inline-block text-center px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg">
+                    <Link to="/application" state={{ loanType: loan.id }} className="btn-primary inline-block text-center px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg">
                       Apply for {loan.name}
-                    </a>
+                    </Link>
                   </div>
                   
                   <div className="mt-6 lg:mt-0">

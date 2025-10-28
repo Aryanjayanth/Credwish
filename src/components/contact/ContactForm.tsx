@@ -13,7 +13,6 @@ interface FormData {
   email: string;
   phone: string;
   loanType: string;
-  message: string;
 }
 
 const ContactForm = () => {
@@ -23,8 +22,7 @@ const ContactForm = () => {
     name: '',
     email: '',
     phone: '',
-    loanType: '',
-    message: ''
+    loanType: ''
   });
   const [errors, setErrors] = useState<Partial<FormData>>({});
 
@@ -57,9 +55,6 @@ const ContactForm = () => {
       newErrors.loanType = 'Please select a loan type';
     }
     
-    if (!formData.message.trim()) {
-      newErrors.message = 'Message is required';
-    }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -87,7 +82,6 @@ const ContactForm = () => {
           email: formData.email,
           phone: formData.phone,
           loanType: formData.loanType,
-          message: formData.message,
           _subject: `New Loan Inquiry from ${formData.name}`,
           _replyto: formData.email,
           _format: 'plain',
@@ -120,8 +114,7 @@ const ContactForm = () => {
         name: '',
         email: '',
         phone: '',
-        loanType: '',
-        message: ''
+        loanType: ''
       });
       setErrors({});
       
@@ -218,22 +211,6 @@ const ContactForm = () => {
           </SelectContent>
         </Select>
         {errors.loanType && <p className="mt-1 text-sm text-red-500">{errors.loanType}</p>}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="message" className="text-sm font-medium text-gray-700">
-          Message <span className="text-red-500">*</span>
-        </Label>
-        <Textarea
-          id="message"
-          name="message"
-          rows={4}
-          value={formData.message}
-          onChange={handleChange}
-          className={`mt-1 ${errors.message ? 'border-red-500' : ''}`}
-          placeholder="Enter your message"
-        />
-        {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message}</p>}
       </div>
 
       <div className="pt-2">

@@ -135,9 +135,14 @@ const Contact = () => {
                 <div className="p-3 rounded-lg bg-credwish-100 text-credwish-700 mr-4">
                   <MessageCircle className="h-6 w-6" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900">Send a Message</h3>
+                <h3 className="text-xl font-semibold text-gray-900">Send an Enquiry</h3>
               </div>
-              <ContactForm />
+              <div className="space-y-6">
+                <ContactForm />
+                <div className="text-center text-sm text-blue-900 mt-2">
+                  <p>We'll review your enquiry and contact you shortly</p>
+                </div>
+              </div>
             </div>
             
             {/* Working Hours */}
