@@ -398,46 +398,6 @@ const SpecialProducts = () => {
         showCategories={false}
         className="bg-gray-50"
       />
-      
-
-      {/* CTA Section - Styled to match PageCTA */}
-      <section className="relative py-16 md:py-24 overflow-hidden bg-gradient-to-br from-credwish-700 via-credwish-600 to-credwish-700">
-        {/* Decorative elements */}
-        <div className="absolute inset-0 overflow-hidden opacity-10">
-          <div className="absolute -top-24 -right-24 w-64 h-64 bg-white rounded-full mix-blend-overlay"></div>
-          <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-white rounded-full mix-blend-overlay"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-48 bg-white/5 rounded-full blur-3xl"></div>
-        </div>
-        
-        <div className="container relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-wider text-credwish-100 bg-white/20 rounded-full mb-4">
-              GET STARTED
-            </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 font-playfair">
-              Ready to Simplify Your Finances?
-            </h2>
-            <p className="text-lg md:text-xl text-credwish-100 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Speak with our financial experts to find the right product for your specific situation.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
-                href="/application" 
-                className="group relative overflow-hidden px-8 py-4 text-base font-semibold bg-white text-credwish-700 hover:bg-gray-50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg rounded-lg"
-              >
-                Apply Now
-              </a>
-              <a 
-                href="/contact" 
-                className="px-8 py-4 text-base font-semibold text-white border-2 border-white hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg rounded-lg"
-              >
-                Speak to an Advisor
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
